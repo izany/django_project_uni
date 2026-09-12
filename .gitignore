@@ -45,3 +45,4 @@ htmlcov/
 # ...
 media/product
 mysql.cnf
+django_store.zip
