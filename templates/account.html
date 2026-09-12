@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- WISHLIST AREA START -->
+    <div class="liton__wishlist-area pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- PRODUCT TAB AREA START -->
+                    <div class="ltn__product-tab-area">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="ltn__tab-menu-list mb-50">
+                                        <div class="nav">
+                                            <a class="{% if not open_account %} active {% endif %} show" data-toggle="tab" href="#liton_tab_1_1">Dashboard <i class="fas fa-home"></i></a>
+                                            <a data-toggle="tab" href="#liton_tab_1_2">Orders <i class="fas fa-file-alt"></i></a>
+                                            <a data-toggle="tab" href="#liton_tab_1_5" {% if open_account %} class="active"{% endif %}>Account Details <i class="fas fa-user"></i></a>
+                                            <a href="{% url "account_email" %}">Manage Emails <i class="fas fa-mail-bulk"></i></a>
+                                            <a href="{% url 'account_change_password' %}">Change Password <i class="fas fa-paste"></i></a>
+                                            <a href="{% url "account_logout" %}">Logout <i class="fas fa-sign-out-alt"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade{% if not open_account %} active show{% endif %}" id="liton_tab_1_1">
+                                            <div class="ltn__myaccount-tab-content-inner">
+                                                <p>Hello <strong>{{ request.user.username }}</strong> (not <strong>{{ request.user.username }}</strong>? <small><a href="{% url "account_logout" %}">Log out</a></small> )</p>
+                                                <p>From your account dashboard you can view your <span>recent orders</span>, manage your <span>shipping and billing addresses</span>, and <span>edit your password and account details</span>.</p>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="liton_tab_1_2">
+                                            <div class="ltn__myaccount-tab-content-inner">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Order id</th>
+                                                                <th>Date</th>
+                                                                <th>Total</th>
+                                                                <th>Status</th>
+                                                                {% comment %}
+                                                                <th>Action</th>
+                                                                {% endcomment %}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for order in orders %}
+                                                            <tr>
+                                                                <td>{{  order.order_id }}</td>
+                                                                <td>{{ order.c_date }}</td>
+                                                                <td>${{ order.total }}</td>
+                                                                <td>{{ order.get_status_display }}</td>
+                                                                {% comment %}
+                                                                <td><a href="cart.html">View</a></td>
+                                                                {% endcomment %}
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade{% if open_account %} active show{% endif %}" id="liton_tab_1_5">
+                                            <div class="ltn__myaccount-tab-content-inner mb-50">
+                                                <p>The following addresses will be used on the checkout page by default.</p>
+                                                <div class="ltn__form-box">
+                                                    <form method="post" action="{% url "account" %}" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                                        <!-- CENTERED IMAGE SECTION -->
+                                                            <div style="text-align: center; margin-bottom: 30px;">
+
+                                                                {% if user.image %}
+                                                                    <img src="{{ user.image.url }}"
+                                                                         alt="Profile"
+                                                                         style="width: 120px; height: 120px; object-fit: cover;
+                                                                                border-radius: 50%; border: 3px solid #ddd;
+                                                                                display: block; margin: 0 auto 12px auto;">
+                                                                {% else %}
+                                                                    <div style="width: 120px; height: 120px; border-radius: 50%;
+                                                                                background: #eee; color: #999;
+                                                                                display: flex; align-items: center; justify-content: center;
+                                                                                margin: 0 auto 12px auto; font-size: 13px;">
+                                                                        No image
+                                                                    </div>
+                                                                {% endif %}
+
+                                                                <div style="display: inline-block;">
+                                                                    {{ image_form.image }}
+                                                                </div>
+                                                            </div>
+                                                        <div class="row mb-50">
+                                                            <div class="col-md-6">
+                                                                <label>First name:</label>
+                                                                <input type="text" name="ltn_first_name" placeholder="{{ request.user.first_name }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Last name:</label>
+                                                                <input type="text" name="ltn_last_name" placeholder="{{ request.user.last_name }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Address 1:</label>
+                                                                <input type="text" name="ltn_Address_1" placeholder="{{ user.address_1 }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>Address 2:</label>
+                                                                <input type="text" name="ltn_Address_2" placeholder="{{ user.address_2 }}">
+                                                            </div>
+
+
+                                                            <div class="col-md-6">
+                                                                <label>city:</label>
+                                                                <input type="text" name="ltn_city" placeholder="{{ user.city }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>state:</label>
+                                                                <input type="text" name="ltn_state" placeholder="{{ user.state }}">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label>zip:</label>
+                                                                <input type="text" name="ltn_zip" placeholder="{{ user.zip }}">
+                                                                {% if invalid_zip %}
+                                                                    <h6 class="error" style="color: red;">ZIP code must be a number</h6>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-wrapper">
+                                                            {% if invalid_password %}
+                                                                {% for i in  password_errors %}
+                                                                    <h5 style="color: #E55472">{{ i }}</h5>
+                                                                {% endfor %}
+                                                            {% elif invalid_confirm_password %}
+                                                                <h4 style="color: #E55472">Confirm Password Incorrect</h4>
+                                                            {% endif %}
+                                                            {% if password_changed %}
+                                                                <h4 style="color: #E55472">password_changed</h4>
+                                                            {% endif %}
+                                                            <button type="submit" class="btn theme-btn-1 btn-effect-1 text-uppercase">Save Changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PRODUCT TAB AREA END -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- WISHLIST AREA START -->
+
+{% endblock %}
+
