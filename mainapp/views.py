@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Cart, Category, CartItem, Item, Review, Profile, Order, OrderItem, AboutUsText, ClientSays, IndexSlider, TermsOfService, FAQ
+from .models import Cart, Category, CartItem, Item, Review, Profile, Order, OrderItem, AboutUsText, ClientSays, IndexSlider, TermsOfService, FAQ, SiteInformation
 from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as django_login
@@ -188,13 +188,16 @@ def logout(request, context: dict, kwargs):
 @base
 def contact(request, context: dict, kwargs):
     template = loader.get_template('contact.html')
+    opening_hours = SiteInformation.objects.filter(field="opening_hours").first()
+    context["opening_hours"] = opening_hours.text if opening_hours else ''
     return HttpResponse, template, context, request
 
 
 @base
 def about_us(request, context: dict, kwargs):
     template = loader.get_template('about.html')
-    context["aboutustext"] = AboutUsText.objects.all().first().text
+    aboutustext = SiteInformation.objects.filter(field="about_us").first()
+    context["aboutustext"] = aboutustext.text if aboutustext else ''
     context["clientsays"] = ClientSays.objects.all()
     #for i in context["clientsays"]:
     #    i.image = i.image
@@ -211,7 +214,8 @@ def faq(request, context: dict, kwargs):
 @base
 def terms_of_service(request, context: dict, kwargs):
     template = loader.get_template('terms.html')
-    context["termsofservicetext"] = TermsOfService.objects.all().first().text
+    termsofservicetext = SiteInformation.objects.filter(field="terms_of_service").first()
+    context["termsofservicetext"] = termsofservicetext.text if termsofservicetext else ''
 
     return HttpResponse, template, context, request
 

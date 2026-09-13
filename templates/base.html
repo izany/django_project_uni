@@ -454,7 +454,7 @@
                                     <img src="{% static 'img/logo.png' %}" alt="Logo">
                                 </div>
                             </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo incididunt ut labore et dolore</p>
+                            <p>{{ footer_text }}</p>
                             <div class="footer-address">
                                 <ul>
                                     <li>
@@ -462,7 +462,7 @@
                                             <i class="icon-location-pin"></i>
                                         </div>
                                         <div class="footer-address-info">
-                                            <p>Brooklyn, New York, United States</p>
+                                            <p>{{ address }}</p>
                                         </div>
                                     </li>
                                     <li>
@@ -478,7 +478,7 @@
                                             <i class="icon-envelope"></i>
                                         </div>
                                         <div class="footer-address-info">
-                                            <p><a href="mailto:example@example.com">example@example.com</a></p>
+                                            <p><a href="mailto:example@example.com">{{ email }}</a></p>
                                         </div>
                                     </li>
                                 </ul>

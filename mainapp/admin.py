@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import County, Profile, Item, Cart, CartItem, Review, Category, Order, OrderItem, AboutUsText, ClientSays, IndexSlider, TermsOfService, FAQ
+from .models import County, Profile, Item, Cart, CartItem, Review, Category, Order, OrderItem, AboutUsText, ClientSays, IndexSlider, TermsOfService, FAQ, SiteInformation
 
 admin.site.register(County)
 admin.site.register(Profile)
@@ -15,3 +15,4 @@ admin.site.register(ClientSays)
 admin.site.register(IndexSlider)
 admin.site.register(TermsOfService)
 admin.site.register(FAQ)
+admin.site.register(SiteInformation)

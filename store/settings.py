@@ -211,4 +211,3 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 # ------------------ custom Settings ------------------
 
-PHONE_NUMBER = '+989150001516'

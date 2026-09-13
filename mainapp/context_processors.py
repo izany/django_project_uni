@@ -1,7 +1,6 @@
-from mainapp.models import Category, CartItem
+from mainapp.models import Category, CartItem, SiteInformation
 from mainapp.views import get_cart
 from django.urls import resolve
-from store.settings import PHONE_NUMBER
 
 def base_context(request):
     # preprocessing
@@ -16,8 +15,15 @@ def base_context(request):
         page = ''
 
     # context
+    phone = SiteInformation.objects.filter(field="phone_number").first()
+    email = SiteInformation.objects.filter(field="email").first()
+    footer_text = SiteInformation.objects.filter(field="footer_text").first()
+    address = SiteInformation.objects.filter(field="address").first()
     context = {
-        "phone": PHONE_NUMBER,
+        "phone": phone.text if phone else '',
+        "email": email.text if email else '',
+        "footer_text": footer_text.text if footer_text else '',
+        "address": address.text if address else '',
         "category": [i[1] for i in Category.objects.values_list()],
         "is_authenticated": request.user.is_authenticated,
         "page": page.replace('_', ' ').title() or "Home",
