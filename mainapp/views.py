@@ -14,6 +14,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import update_session_auth_hash
 from mainapp.utils import standardize_image
+from helpdesk.models import Queue, Ticket, FollowUp
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class NotEnoughStock(Exception):
@@ -190,6 +193,54 @@ def contact(request, context: dict, kwargs):
     template = loader.get_template('contact.html')
     opening_hours = SiteInformation.objects.filter(field="opening_hours").first()
     context["opening_hours"] = opening_hours.text if opening_hours else ''
+
+    # ticket system
+    available_queues = Queue.objects.filter(allow_public_submission=True)
+    context['available_queues'] = available_queues
+    context['prefill_email'] = request.user.email if request.user.is_authenticated else ''
+
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        subject = request.POST.get('subject', '').strip()
+        body = request.POST.get('message', '').strip()
+        priority = request.POST.get('priority', '3')
+        queue_id = request.POST.get('queue')
+
+        # validation
+        if not email or not subject or not body or not queue_id:
+            context['error'] = 'Email, subject, message, and queue are all required.'
+        else:
+            try:
+                priority = int(priority)
+                if priority not in (1, 2, 3, 4, 5):
+                    priority = 3
+            except (TypeError, ValueError):
+                priority = 3
+
+            queue = available_queues.filter(pk=queue_id).first()
+            if not queue:
+                context['error'] = 'Invalid queue selected.'
+            else:
+                # create the ticket
+                ticket = Ticket.objects.create(
+                    title=subject,
+                    queue=queue,
+                    submitter_email=email,
+                    status=Ticket.OPEN_STATUS,
+                    priority=priority,
+                )
+
+                FollowUp.objects.create(
+                    ticket=ticket,
+                    user=request.user if request.user.is_authenticated else None,
+                    title='',
+                    comment=body,
+                    public=True,
+                )
+
+                context['submitted'] = True
+                context['ticket_id'] = ticket.id
+
     return HttpResponse, template, context, request
 
 

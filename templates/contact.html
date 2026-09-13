@@ -47,40 +47,98 @@
     <!-- CONTACT ADDRESS AREA END -->
 
 
-    {% comment %}
+
     <!-- CONTACT MESSAGE AREA START -->
     <div class="ltn__contact-message-area mt-100 mb-80">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ltn__form-box contact-form-box box-shadow--- white-bg---">
-                        <h3 class="text-center mb-50">Need Our Help! Please Send an Email.</h3>
-                        <form id="contact-form" action="mail.php" method="post">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <input type="text" name="name" placeholder="Name:">
-                                    <input type="email" name="email" placeholder="Email:">
-                                    <input type="text" name="phone" placeholder="Phone Number:">
-                                    <input type="text" name="subject" placeholder="Your Title:">
-                                </div>
-                                <div class="col-md-7">
-                                    <textarea name="message" placeholder="Enter message"></textarea>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="btn-wrapper mt-0">
-                                        <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">Send Message</button>
-                                    </div>
-                                    <p class="form-messege mb-0 mt-20"></p>
-                                </div>
+                        {% comment %}
+                        <iframe
+                            src="{% url 'helpdesk:submit_iframe' %}"
+                            style="width:100%; border:none; min-height:1000px;"
+                            title="Submit a Ticket"
+                            loading="lazy"
+                        ></iframe>
+                        {% endcomment %}
+
+                        {% if submitted %}
+                            <div class="ticket-success">
+                                <h3>Thanks!</h3>
+                                <p>
+                                    Your ticket <strong>#{{ ticket_id }}</strong> has been received.
+                                    We'll reply to <strong>{{ prefill_email }}</strong> soon.
+                                </p>
                             </div>
-                        </form>
+                        {% else %}
+                            <h3 class="text-center mb-50">Need Our Help? Please Send an Email.</h3>
+
+                            {% if error %}
+                                <p class="ticket-error">{{ error }}</p>
+                            {% endif %}
+
+                            <form id="contact-form" method="post" action="{% url 'contact' %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input type="email" name="email"
+                                               placeholder="Email:"
+                                               value="{{ prefill_email }}"
+                                               required>
+
+                                        <input type="text" name="subject"
+                                               placeholder="Summary of the problem"
+                                               required>
+
+
+                                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 30px;">
+                                            <label for="queue" style="margin: 0; white-space: nowrap; font-size: 14px; font-weight: 500; color: #666; min-width: 70px;">Subject:</label>
+                                            <select name="queue" id="queue" required
+                                                    style="flex: 1; height: 50px; padding: 0 20px; background-color: #f7f7f7; border: none; border-radius: 0; font-size: 16px; color: #000; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url(&quot;data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; padding-right: 45px;">
+                                                {% for q in available_queues %}
+                                                    <option value="{{ q.id }}">{{ q.title }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 30px;">
+                                            <label for="priority" style="margin: 0; white-space: nowrap; font-size: 14px; font-weight: 500; color: #666; min-width: 70px;">Priority:</label>
+                                            <select name="priority" id="priority" required
+                                                    style="flex: 1; height: 50px; padding: 0 20px; background-color: #f7f7f7; border: none; border-radius: 0; font-size: 16px; color: #000; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url(&quot;data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E&quot;); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; padding-right: 45px;">
+                                                <option value="1">Critical</option>
+                                                <option value="2">High</option>
+                                                <option value="3" selected>Normal</option>
+                                                <option value="4">Low</option>
+                                                <option value="5">Very Low</option>
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-7">
+                                        <textarea name="message"
+                                                  placeholder="Description of your issue"
+                                                  required></textarea>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="btn-wrapper mt-0">
+                                            <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">
+                                                Send Message
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- CONTACT MESSAGE AREA END -->
-    {% endcomment %}
+
 
 
 {% endblock %}

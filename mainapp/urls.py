@@ -37,11 +37,15 @@ urlpatterns = [
     path('accounts/password/set/', not_found),
     path('accounts/reauthenticate/', not_found),
 
-
-
     path('accounts/', include('allauth.urls')),
 
+
+    # media
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+
+    # django-helpdesk
+    path('support/', include('helpdesk.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 '''

@@ -53,8 +53,17 @@ INSTALLED_APPS = [
     'mainapp.apps.MainappConfig',
     'ckeditor',
     'allauth',
-    'allauth.account'
+    'allauth.account',
+    'django.contrib.sites',
+    'django.contrib.humanize',
+    'rest_framework',
+    'helpdesk',
 ]
+
+HELPDESK_TEAMS_MODE_ENABLED=False
+from mainapp.permissions import help_desk_public_view_protector
+
+HELPDESK_PUBLIC_VIEW_PROTECTOR = help_desk_public_view_protector
 
 SITE_ID = 1
 
