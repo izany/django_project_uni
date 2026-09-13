@@ -11,7 +11,7 @@
                             <i class="icon-location-pin"></i>
                         </div>
                         <h3>Address</h3>
-                        <p>{{ address }}</p>
+                        <p>{{ address|safe }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -20,7 +20,7 @@
                             <i class="icon-phone"></i>
                         </div>
                         <h3>Phone Number</h3>
-                        <p>{{ phone }}</p>
+                        <p>{{ phone|safe }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -29,7 +29,7 @@
                             <i class="icon-envelope"></i>
                         </div>
                         <h3>Email Address</h3>
-                        <p>{{ email }}</p>
+                        <p>{{ email|safe }}</p>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -38,7 +38,7 @@
                             <i class="icon-speedometer"></i>
                         </div>
                         <h3>Opening Hours</h3>
-                        <p>{{ opening_hours }}</p>
+                        <p>{{ opening_hours|safe }}</p>
                     </div>
                 </div>
             </div>

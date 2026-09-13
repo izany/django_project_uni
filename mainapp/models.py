@@ -144,7 +144,7 @@ class SiteInformation(models.Model):
     text = RichTextField()
 
     def __str__(self):
-        return self.title
+        return self.field
 
 class FAQ(models.Model):
     priority = models.IntegerField(unique=True)

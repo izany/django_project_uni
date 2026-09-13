@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="header-feature-info">
                                     <h6>Phone</h6>
-                                    <p><a href="tel:{{ phone }}">{{ phone }}</a></p>
+                                    <p><a href="tel:{{ phone|safe }}">{{ phone|safe }}</a></p>
                                 </div>
                             </div>
                             <!-- header-search-2 -->
@@ -454,7 +454,7 @@
                                     <img src="{% static 'img/logo.png' %}" alt="Logo">
                                 </div>
                             </div>
-                            <p>{{ footer_text }}</p>
+                            <p>{{ footer_text|safe }}</p>
                             <div class="footer-address">
                                 <ul>
                                     <li>
@@ -462,7 +462,7 @@
                                             <i class="icon-location-pin"></i>
                                         </div>
                                         <div class="footer-address-info">
-                                            <p>{{ address }}</p>
+                                            <p>{{ address|safe }}</p>
                                         </div>
                                     </li>
                                     <li>
@@ -470,7 +470,7 @@
                                             <i class="icon-phone"></i>
                                         </div>
                                         <div class="footer-address-info">
-                                            <p><a href="tel:{{ phone }}">{{ phone }}</a></p>
+                                            <p><a href="tel:{{ phone|safe }}">{{ phone|safe }}</a></p>
                                         </div>
                                     </li>
                                     <li>
@@ -478,7 +478,7 @@
                                             <i class="icon-envelope"></i>
                                         </div>
                                         <div class="footer-address-info">
-                                            <p><a href="mailto:example@example.com">{{ email }}</a></p>
+                                            <p><a href="mailto:example@example.com">{{ email|safe }}</a></p>
                                         </div>
                                     </li>
                                 </ul>
