@@ -18,11 +18,11 @@ class County(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address_1 = models.CharField(max_length=80, null=True)
-    address_2 = models.CharField(max_length=80, null=True)
-    city = models.CharField(max_length=30, null=True)
-    state = models.CharField(max_length=30, null=True)
-    zip = models.IntegerField(null=True,)
+    address_1 = models.CharField(max_length=80, null=True, default='')
+    address_2 = models.CharField(max_length=80, null=True, default='')
+    city = models.CharField(max_length=30, null=True, default='')
+    state = models.CharField(max_length=30, null=True, default='')
+    zip = models.IntegerField(null=True, default='')
     image = models.ImageField(upload_to="profiles/", default="static/img/product/1.png")
 
     def __str__(self):
