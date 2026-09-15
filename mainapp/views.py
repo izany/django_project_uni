@@ -110,6 +110,7 @@ def base_old(func):
             return HttpResponse(template.render(context, request))
         elif res_func == redirect:
             return redirect(template)
+        return None
 
     return wrapper
 
@@ -354,7 +355,7 @@ def product(request, context: dict, kwargs):
 
     # load comments
     comments = list()
-    reviews = Review.objects.filter(item=Item.objects.filter(id=product_id).first(), flag=False).order_by("c_date")
+    reviews = Review.objects.filter(item=Item.objects.filter(id=product_id).first(), flag=True).order_by("c_date")
     for i in reviews:
         comments.append({
             "user_image": Profile.objects.filter(user=i.user).first().image,
@@ -605,12 +606,13 @@ def checkout(request, context: dict, kwargs):
 def recover_password(request, context: dict, kwargs):
     return redirect, "index", context, request
 
-
+# replaced
 @base
 def cart(request, context: dict, kwargs):
     pass
 
 
+# test
 '''def run(request):
     template = "runnnnn"
     for i in User.objects.all():
